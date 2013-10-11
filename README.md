@@ -8,13 +8,15 @@ Prerequisites
 
 You will need a https server to use *godauth.js*:
 
- 1. Include the *openssl* chef cookbook on the server hosting your Node.js app.
- 2. Initialize the https server with the following options:
-        
+Include the *openssl* chef cookbook on the server hosting your Node.js app.
+
+Initialize the https server with the following options:
+
     {
         key: fs.readFileSync('/etc/ssl/private/*.prezi.com.key'),
         cert: fs.readFileSync('/etc/ssl/private/*.prezi.com.crt')
-    };
+    }
+
 
 Installation
 ------------
@@ -43,5 +45,5 @@ following keys:
  * timestamp
  * signature
 
-In case of unsuccessful authentication the return value is `null`. If you are using the `authenticateRequest` 
+In case of unsuccessful authentication the return value is *null*. If you are using the *authenticateRequest* 
 function, a redirect to the prezi login page is done automatically.
