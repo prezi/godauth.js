@@ -1,8 +1,9 @@
 "use strict";
-var util = require("util"),
-    crypto = require('crypto')
 
-function GodAuth(cookie_secret){
+var util = require("util"),
+    crypto = require('crypto');
+
+function GodAuth(cookie_secret, url) {
 
 	this._sha1sum = function(str) {
 		var shasum = crypto.createHash('sha1');
@@ -48,7 +49,7 @@ function GodAuth(cookie_secret){
 
 	this.authenticateCookie = function(cookieValue, userAgent) {
 		var match = /^([\w\W]+)\-([a-zA-Z0-9]+)\-([0-9]+)\-([a-z0-9]+)$/.exec(cookieValue);
-		
+
 		if (!match || match.length < 5) {
 			return null;
 		}
@@ -77,8 +78,8 @@ function GodAuth(cookie_secret){
 		}
 
 		if (auth === null) {
-			response.writeHead(301,
-					{ Location: 'https://prezi.com/api/v2/auth/godauth/?ref=' + encodeURIComponent(request.url) }
+			response.writeHead(302,
+					{ Location: 'https://prezi.com/api/v2/auth/godauth/?ref=' + encodeURIComponent(this._url) }
 					);
 			response.end();
 		}
@@ -87,8 +88,9 @@ function GodAuth(cookie_secret){
 	}
 
 	this._secret = cookie_secret;
+	this._url = url;
 }
 
-module.exports.create = function(cookie_secret) {
-	return new GodAuth(cookie_secret);
+module.exports.create = function(cookie_secret, url) {
+	return new GodAuth(cookie_secret, url);
 };
